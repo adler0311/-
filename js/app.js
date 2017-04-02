@@ -1,4 +1,3 @@
-
 // initialize GoogleMap
 var map, marker;
 function initMap() {
@@ -8,13 +7,70 @@ function initMap() {
   	});
 
   	// Activates knockout.js
-	ko.applyBindings(new ViewModel()); 
+	
 };
 
 function mapError() {
 	alert("There's a problem. Google map loading is faild!")
 }
 
+var lat= 37.5586875;
+var lng= 126.93669879999993;
+
+
+function makeInputDate() {
+	var currentDate = new Date();
+	currentYear = currentDate.getFullYear().toString();
+	currentMonth = currentDate.getMonth() + 1;
+	currentDay = currentDate.getDate();
+
+	if (currentMonth < 10) {
+		currentMonth = "0" + currentMonth.toString();
+	}
+	else {
+		currentMonth = currentMonth.toString();
+	}
+
+	if (currentDay < 10) {
+		currentDay = "0" + currentDay.toString();
+	}
+	else {
+		currentDay = currentDay.toString();
+	}
+
+	var inputDate = currentYear + currentMonth + currentDay;
+	return inputDate
+}
+
+OAUTH_TOKEN = "UY5051X5NZARVOAGHY1Y4UWSVA2VAXUQCWBCNY4WXFTUQSSJ";
+
+// 신촌 지역 정보 가져오기
+
+var inputDate = makeInputDate();
+var spots = [];
+
+$.ajax({
+	url: "https://api.foursquare.com/v2/venues/explore",
+	data: "ll="+lat+","+lng+"&oauth_token=" + OAUTH_TOKEN + "&v=" + inputDate,
+	success: function(data) {
+		var items = data.response.groups[0].items;
+		for (int = i=0; i < items.length; i++)
+		{
+			var thisLocation = {lat: items[i].venue.location.lat, lng: items[i].venue.location.lng }
+			spots.push({name: items[i].name,
+						location: thisLocation,
+						foursquaredId: items[i].id})
+		};
+	},
+
+	complete: function() {
+		ko.applyBindings(new ViewModel(spots)); 
+	}
+})
+
+
+
+/*
 // model of neighborhood location.
 var spots = [
 	{
@@ -53,7 +109,7 @@ var spots = [
 		foursquareId: "513af3dde4b06910fe19e72b"
 	}
 ];
-
+*/
 
 // constructor function.
 var Spot = function(data) {
@@ -62,7 +118,7 @@ var Spot = function(data) {
 }
 
 
-var ViewModel = function() {
+var ViewModel = function(spots) {
 	var self = this;	
 
 	self.isActive = ko.observable();
@@ -92,7 +148,7 @@ var ViewModel = function() {
 			dataType: 'JSON',
 			cache: false,
 			url: 'https://api.foursquare.com/v2/venues/explore',
-			data: 'v=20161027&ll=' + item.location.lat + '%2C' + item.location.lng + '&radius=1800&query='
+			data: 'v='+inputDate+'&ll=' + item.location.lat + '%2C' + item.location.lng + '&radius=1800&query='
 					+ item.name + '&novelty=new&oauth_token=UY5051X5NZARVOAGHY1Y4UWSVA2VAXUQCWBCNY4WXFTUQSSJ',
 			async: true,
 			success: function(data) {
@@ -206,3 +262,4 @@ var ViewModel = function() {
 		});
 	})
 }
+

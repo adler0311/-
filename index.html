@@ -2,36 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-	<title>Neighborhood map</title>
+	<title>신촌 인근지역 지도</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+	<link href="https://fonts.googleapis.com/earlyaccess/nanumbrushscript.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/base.css" >
 
 </head>
-<body>
-	<header data-bind="css: {open: isActive}, {'#navigation': isActive}, click: toggleActive" id="nav-icon1">
-	  <span></span>
-	  <span></span>
-	  <span></span>
-	</header>
-	<nav id = "navigation" data-bind="css: {open: isActive}">
-		<div class="search">
-	    	<label>Search</label>
-	    	<input data-bind='value: filter, valueUpdate: "afterkeydown"' class="form-control">
+<body class="parallax">
+	<div class="row" id="head">
+		<div class="container">
+			<div class="col-md-11">
+				<h2>원하는 장소를 검색하세요.</h2>
+
+			</div>
+			<div class="col-md-1">
+				<div>
+				  	<div id="nav-container" class="toggle-icon" data-bind="css: {pushed: isActive}, click:toggleActive">
+				    	<span class="bar"></span>
+				    	<span class="bar"></span>
+				    	<span class="bar"></span>	
+				  	</div><!-- /toggle-icon -->
+				</div>
+
+			</div>
 		</div>
-		<div class="list">
-			<ul data-bind="foreach: filteredItems">
-	    		<li data-bind="click: displayInfoWindow">
-	        		<span data-bind="text: $data.name"></span>
-	    		</li>
-			</ul>
+		
+	</div>
+
+	
+	<div class="container">	
+		<div class="col-md-9">
+			<div id="map">
+			</div>
 		</div>
-	</nav>
-	<div id="map">
+		<div class="col-md-3" id="navi" data-bind="style: {backgroundColor: isActive() ? 'blanchedalmond' : '' }">
+			<nav id = "navigation" data-bind="css: {open: isActive}">
+				<div class="search">
+			    	<label>검색</label>
+			    	<input data-bind='value: filter, valueUpdate: "afterkeydown"' class="form-control">
+				</div>
+				<div class="list">
+					<ul data-bind="foreach: filteredItems">
+			    		<li data-bind="click: displayInfoWindow">
+			        		<span data-bind="text: $data.name"></span>
+			    		</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+
 	</div>
 
 	<script src="js/jquery.js"></script>
@@ -41,5 +66,6 @@
         src="https://maps.googleapis.com/maps/api/js?library=geometry&key=AIzaSyDOZhYkXdYEeB51O3L_TYW0JIWVrqvYaSI&callback=initMap"
         onerror="mapError()">
     </script>
+
 </body>
 </html>
