@@ -3,6 +3,8 @@
 
 ## 시작하기
 깃허브 주소를 복사해서 로컬 드라이브에 복사한 후 index.html을 실행하세요.
+혹은 다음 사이트에 접속하세요
+https://shinchonmap.herokuapp.com/
 
 ## 사용한 스택:
 * [구글 지도 API]
